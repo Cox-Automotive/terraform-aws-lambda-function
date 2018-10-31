@@ -6,7 +6,8 @@ locals {
 }
 
 data "archive_file" "func_sha" {
-  source_dir = "${local.src}"
+  type        = "zip"
+  source_dir  = "${local.src}"
   output_path = "${var.tmp_dir}/${uuid()}-aws-lambda-function.sha"
 }
 
