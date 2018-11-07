@@ -3,6 +3,7 @@ locals {
   main_go        = "${local.src}/main.go"
   func_sha       = "${base64sha256(file("${local.main_go}"))}"
   build_work_dir = "${var.build_command_working_dir == "" ? local.src : var.build_command_working_dir}"
+  files          = "${path.module}/files"
 }
 
 data "archive_file" "func_sha" {
@@ -13,7 +14,7 @@ data "archive_file" "func_sha" {
 
 resource "aws_iam_role_policy" "policy" {
   role   = "${var.iam_role_name}"
-  policy = "${var.iam_role_policy}"
+  policy = "${file("${local.files}/base-policy.json")}"
 }
 
 resource "random_id" "zip" {

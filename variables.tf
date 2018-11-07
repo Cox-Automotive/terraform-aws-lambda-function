@@ -17,9 +17,6 @@ variable "iam_role_arn" {
   description = "The ARN of the IAM role that will be assumed by Lambda."
 }
 
-variable "iam_role_policy" {
-  description = "The policy JSON use by the IAM role that will be assumed by Lambda."
-}
 
 #-------------------------------------------------------------------------------
 # OPTIONAL VARIABLES
