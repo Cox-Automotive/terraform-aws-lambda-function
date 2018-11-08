@@ -34,6 +34,7 @@ resource "random_id" "zip" {
   }
 
   byte_length = 16
+  depends_on  = ["null_resource.clean"]
 }
 
 #-------------------------------------------------------------------------------
