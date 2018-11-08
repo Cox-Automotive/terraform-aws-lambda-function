@@ -9,7 +9,7 @@ locals {
 resource "null_resource" "clean" {
   provisioner "local-exec" {
     working_dir = "${local.build_work_dir}"
-    comamnd     = "${var.clean_command}"
+    command     = "${var.clean_command}"
   }
 }
 
