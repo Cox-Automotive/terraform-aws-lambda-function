@@ -44,6 +44,12 @@ variable "build_command_working_dir" {
   description = "The directory in which the build command will be run. If not explicitly set, the src directory will be used."
 }
 
+variable "clean_command" {
+  type = "string"
+  default = "make clean"
+  description = "The command that cleans up the build working dir. Defaults to 'make clean'."
+}
+
 variable "tmp_dir" {
   type        = "string"
   default     = "/tmp"

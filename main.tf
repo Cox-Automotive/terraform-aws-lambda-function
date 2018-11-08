@@ -6,10 +6,19 @@ locals {
   files          = "${path.module}/files"
 }
 
+resource "null_resource" "clean" {
+  provisioner "local-exec" {
+    working_dir = "${local.build_work_dir}"
+    comamnd     = "${var.clean_command}"
+  }
+}
+
 data "archive_file" "func_sha" {
   type        = "zip"
   source_dir  = "${local.src}"
   output_path = "${var.tmp_dir}/${uuid()}-aws-lambda-function.sha"
+
+  depends_on = ["null_resource.clean"]
 }
 
 resource "aws_iam_role_policy" "policy" {
