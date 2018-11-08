@@ -67,12 +67,12 @@ resource "null_resource" "build" {
 }
 
 resource "aws_lambda_function" "func" {
-  filename         = "${random_id.zip.keepers.local_src}/${random_id.zip.dec}-lambda.zip"
-  function_name    = "${random_id.zip.keepers.lambda_function_name}"
-  role             = "${var.iam_role_arn}"
-  handler          = "main"
-  runtime          = "go1.x"
-  timeout          = "${var.lambda_timeout}"
+  filename      = "${random_id.zip.keepers.local_src}/${random_id.zip.dec}-lambda.zip"
+  function_name = "${random_id.zip.keepers.lambda_function_name}"
+  role          = "${var.iam_role_arn}"
+  handler       = "main"
+  runtime       = "go1.x"
+  timeout       = "${var.lambda_timeout}"
 
   environment {
     variables = "${var.env_vars}"

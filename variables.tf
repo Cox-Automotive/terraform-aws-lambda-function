@@ -17,7 +17,6 @@ variable "iam_role_arn" {
   description = "The ARN of the IAM role that will be assumed by Lambda."
 }
 
-
 #-------------------------------------------------------------------------------
 # OPTIONAL VARIABLES
 #-------------------------------------------------------------------------------
@@ -45,8 +44,8 @@ variable "build_command_working_dir" {
 }
 
 variable "clean_command" {
-  type = "string"
-  default = "make clean"
+  type        = "string"
+  default     = "make clean"
   description = "The command that cleans up the build working dir. Defaults to 'make clean'."
 }
 
