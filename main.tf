@@ -79,6 +79,7 @@ resource "null_resource" "clean" {
     lambda_function_name = "${random_id.zip.keepers.lambda_function_name}"
     source_code_sha      = "${random_id.zip.keepers.source_code_sha}"
   }
+
   provisioner "local-exec" {
     working_dir = "${local.build_work_dir}"
     command     = "${var.clean_command}"
