@@ -20,6 +20,12 @@ variable "iam_role_arn" {
 #-------------------------------------------------------------------------------
 # OPTIONAL VARIABLES
 #-------------------------------------------------------------------------------
+variable "lambda_memory_size" {
+  type        = "string"
+  default     = "128"
+  description = "(Optional) Amount of memory in MB your Lambda Function can use at runtime. Defaults to '128'."
+}
+
 variable "lambda_timeout" {
   default     = "300"
   description = "The how many seconds before the Lambda function will timeout. Defaults to 300."
