@@ -75,6 +75,10 @@ resource "aws_lambda_function" "func" {
     variables = "${var.env_vars}"
   }
 
+  tracing_config {
+    mode = "Active"
+  }
+
   depends_on = ["null_resource.build"]
 }
 
