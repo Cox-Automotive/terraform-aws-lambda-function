@@ -17,6 +17,11 @@ resource "aws_iam_role_policy" "policy" {
   policy = "${file("${local.files}/base-policy.json")}"
 }
 
+resource "aws_iam_role_policy_attachment" "xray" {
+  role   = "${var.iam_role_name}"
+  policy_arn = "arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess"
+}
+
 resource "random_id" "zip" {
   keepers {
     local_src            = "${local.src}"
