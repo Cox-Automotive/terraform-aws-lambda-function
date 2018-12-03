@@ -4,8 +4,8 @@ locals {
   func_sha       = "${base64sha256(file("${local.main_go}"))}"
   build_work_dir = "${var.build_command_working_dir == "" ? local.src : var.build_command_working_dir}"
   files          = "${path.module}/files"
-  mode = "${length(var.vpc_subnet_ids) > 0 ? "-vpc" : ""}"
-  name = "${var.name}${local.mode}"
+  mode           = "${length(var.vpc_subnet_ids) > 0 ? "-vpc" : ""}"
+  name           = "${var.name}${local.mode}"
 }
 
 data "archive_file" "func_sha" {
@@ -65,7 +65,7 @@ resource "null_resource" "build" {
 }
 
 resource "aws_lambda_function" "func" {
-  count         = "${length(var.vpc_subnet_ids) > 0 ? 0 : 1}"                             // If more than 0 subnet_ids provided, 0 func, otherwise 1
+  count         = "${length(var.vpc_subnet_ids) > 0 ? 0 : 1}"                          // If more than 0 subnet_ids provided, 0 func, otherwise 1
   filename      = "${random_id.zip.keepers.local_src}/${random_id.zip.dec}-lambda.zip"
   function_name = "${random_id.zip.keepers.lambda_function_name}"
   role          = "${var.iam_role_arn}"
@@ -86,7 +86,7 @@ resource "aws_lambda_function" "func" {
 }
 
 resource "aws_lambda_function" "vpc_func" {
-  count         = "${length(var.vpc_subnet_ids) > 0 ? 1 : 0}"                             // If more than 0 subnet_ids provided, 1 vpc_func, otherwise 0
+  count         = "${length(var.vpc_subnet_ids) > 0 ? 1 : 0}"                          // If more than 0 subnet_ids provided, 1 vpc_func, otherwise 0
   filename      = "${random_id.zip.keepers.local_src}/${random_id.zip.dec}-lambda.zip"
   function_name = "${random_id.zip.keepers.lambda_function_name}"
   role          = "${var.iam_role_arn}"
