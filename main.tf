@@ -18,7 +18,7 @@ resource "aws_iam_role_policy" "policy" {
 }
 
 resource "aws_iam_role_policy_attachment" "xray" {
-  role   = "${var.iam_role_name}"
+  role       = "${var.iam_role_name}"
   policy_arn = "arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess"
 }
 
@@ -63,6 +63,7 @@ resource "null_resource" "build" {
 }
 
 resource "aws_lambda_function" "func" {
+  count         = "${len(var.vpc_subnet_ids) > 0 ? 0 : 1}"                             // If more than 0 subnet_ids provided, 0 func, otherwise 1 
   filename      = "${random_id.zip.keepers.local_src}/${random_id.zip.dec}-lambda.zip"
   function_name = "${random_id.zip.keepers.lambda_function_name}"
   role          = "${var.iam_role_arn}"
@@ -82,6 +83,32 @@ resource "aws_lambda_function" "func" {
   depends_on = ["null_resource.build"]
 }
 
+resource "aws_lambda_function" "vpc_func" {
+  count         = "${len(var.vpc_subnet_ids) > 0 ? 1 : 0}"                             // If more than 0 subnet_ids provided, 1 vpc_func, otherwise 0
+  filename      = "${random_id.zip.keepers.local_src}/${random_id.zip.dec}-lambda.zip"
+  function_name = "${random_id.zip.keepers.lambda_function_name}"
+  role          = "${var.iam_role_arn}"
+  handler       = "main"
+  runtime       = "go1.x"
+  timeout       = "${var.lambda_timeout}"
+  memory_size   = "${var.lambda_memory_size}"
+
+  environment {
+    variables = "${var.env_vars}"
+  }
+
+  tracing_config {
+    mode = "Active"
+  }
+
+  vpc_config {
+    subnet_ids         = ["${var.vpc_subnet_ids}"]
+    security_group_ids = ["${var.vpc_security_group_ids}"]
+  }
+
+  depends_on = ["null_resource.build"]
+}
+
 resource "null_resource" "clean" {
   triggers {
     local_src            = "${random_id.zip.keepers.local_src}"
@@ -94,5 +121,8 @@ resource "null_resource" "clean" {
     command     = "${var.clean_command}"
   }
 
-  depends_on = ["aws_lambda_function.func"]
+  depends_on = [
+    "aws_lambda_function.func",
+    "aws_lambda_function.vpc_func",
+  ]
 }
