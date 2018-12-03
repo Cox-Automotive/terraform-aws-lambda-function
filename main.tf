@@ -27,7 +27,7 @@ resource "aws_iam_role_policy_attachment" "xray" {
 resource "random_id" "zip" {
   keepers {
     local_src            = "${local.src}"
-    lambda_function_name = "${var.name}"
+    lambda_function_name = "${local.name}"
     source_code_sha      = "${data.archive_file.func_sha.output_base64sha256}"
   }
 
