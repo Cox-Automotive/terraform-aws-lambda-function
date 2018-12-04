@@ -3,7 +3,6 @@ locals {
   main_go        = "${local.src}/main.go"
   func_sha       = "${base64sha256(file("${local.main_go}"))}"
   build_work_dir = "${var.build_command_working_dir == "" ? local.src : var.build_command_working_dir}"
-  files          = "${path.module}/files"
   mode           = "${length(var.vpc_subnet_ids) > 0 ? "-vpc" : ""}"
   name           = "${var.name}${local.mode}"
   has_vpc_config = "${length(var.vpc_subnet_ids) > 0}"
