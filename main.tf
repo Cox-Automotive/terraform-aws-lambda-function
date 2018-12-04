@@ -6,6 +6,7 @@ locals {
   files          = "${path.module}/files"
   mode           = "${length(var.vpc_subnet_ids) > 0 ? "-vpc" : ""}"
   name           = "${var.name}${local.mode}"
+  has_vpc_config = "${length(var.vpc_subnet_ids) > 0}"
 }
 
 data "archive_file" "func_sha" {
@@ -14,9 +15,9 @@ data "archive_file" "func_sha" {
   output_path = "${var.tmp_dir}/${uuid()}-aws-lambda-function.sha"
 }
 
-resource "aws_iam_role_policy" "policy" {
-  role   = "${var.iam_role_name}"
-  policy = "${file("${local.files}/base-policy.json")}"
+resource "aws_iam_role_policy_attachment" "base" {
+  role       = "${var.iam_role_name}"
+  policy_arn = "${local.has_vpc_config ? "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole" : "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"}"
 }
 
 resource "aws_iam_role_policy_attachment" "xray" {
