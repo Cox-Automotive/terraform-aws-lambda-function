@@ -3,7 +3,7 @@ output "function_arn" {
 }
 
 output "function_name" {
-  value = "${element(concat(aws_lambda_function.func.*.name, list("")), 0)}"
+  value = "${element(concat(aws_lambda_function.func.*.function_name, list("")), 0)}"
 }
 
 output "vpc_function_arn" {
@@ -11,5 +11,5 @@ output "vpc_function_arn" {
 }
 
 output "vpc_function_name" {
-  value = "${element(concat(aws_lambda_function.vpc_func.*.name, list("")), 0)}"
+  value = "${element(concat(aws_lambda_function.vpc_func.*.function_name, list("")), 0)}"
 }
