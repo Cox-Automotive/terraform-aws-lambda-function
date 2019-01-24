@@ -16,6 +16,7 @@ data "archive_file" "func_sha" {
 }
 
 resource "aws_iam_role_policy_attachment" "base" {
+  name       = "AWS Provided Lambda Base Role added by terraform-aws-lambda-function module"
   role       = "${var.iam_role_name}"
   policy_arn = "${local.has_vpc_config ? "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole" : "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"}"
 }
@@ -29,6 +30,7 @@ resource "aws_iam_role_policy_attachment" "vpc_supplemental" {
 
 resource "aws_iam_role_policy_attachment" "xray" {
   role       = "${var.iam_role_name}"
+  name       = "AWS Provided Xray Role added by terraform-aws-lambda-function module"
   policy_arn = "arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess"
 }
 
