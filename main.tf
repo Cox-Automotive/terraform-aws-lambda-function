@@ -21,9 +21,9 @@ resource "aws_iam_role_policy_attachment" "base" {
 }
 
 resource "aws_iam_role_policy_attachment" "vpc_supplemental" {
-  count  = "${local.has_vpc_config ? 1 : 0}" // If has_vpc_config, 1 vpc_supplemental policy attachment; otherwise none
-  role   = "${var.iam_role_name}"
-  policy = "${file("${local.files}/vpc-supplemental-policy.json")}"
+  count      = "${local.has_vpc_config ? 1 : 0}" // If has_vpc_config, 1 vpc_supplemental policy attachment; otherwise none
+  role       = "${var.iam_role_name}"
+  policy_arn = "${file("${local.files}/vpc-supplemental-policy.json")}"
 }
 
 resource "aws_iam_role_policy_attachment" "xray" {
