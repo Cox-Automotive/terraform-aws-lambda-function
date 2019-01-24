@@ -6,6 +6,7 @@ locals {
   mode           = "${length(var.vpc_subnet_ids) > 0 ? "-vpc" : ""}"
   name           = "${var.name}${local.mode}"
   has_vpc_config = "${length(var.vpc_subnet_ids) > 0}"
+  files          = "${path.module}/files"
 }
 
 data "archive_file" "func_sha" {
@@ -17,6 +18,13 @@ data "archive_file" "func_sha" {
 resource "aws_iam_role_policy_attachment" "base" {
   role       = "${var.iam_role_name}"
   policy_arn = "${local.has_vpc_config ? "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole" : "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"}"
+}
+
+resource "aws_iam_role_policy_attachment" "vpc_supplemental" {
+  count  = "${local.has_vpc_config ? 1 : 0}" // If has_vpc_config, 1 vpc_supplemental policy attachment; otherwise none
+  name   = "VPC Supplemental Policy provided added by terraform-aws-lambda-function module"
+  role   = "${var.iam_role_name}"
+  policy = "${file("${local.files}/vpc-supplement-policy.json")}"
 }
 
 resource "aws_iam_role_policy_attachment" "xray" {
