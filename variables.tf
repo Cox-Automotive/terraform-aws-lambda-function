@@ -60,3 +60,15 @@ variable "tmp_dir" {
   default     = "/tmp"
   description = "The temp directory where a temporary archive of the src dir will be created to determin the directory sha. Defaults to '/tmp'."
 }
+
+variable "vpc_subnet_ids" {
+  type        = "list"
+  description = "(Optional) A list of VPC Subnet IDs. Required when using Lambda within a VPC. Defaults to empty list."
+  default     = []
+}
+
+variable "vpc_security_group_ids" {
+  type        = "list"
+  description = "(Optional) A list of VPC Security Group IDs. Required when using Lambda within a VPC. Defaults to empty list."
+  default     = []
+}
