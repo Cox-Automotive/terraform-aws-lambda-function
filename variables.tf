@@ -31,6 +31,18 @@ variable "lambda_timeout" {
   description = "The how many seconds before the Lambda function will timeout. Defaults to 300."
 }
 
+variable "lambda_runtime" {
+  type        = "string"
+  default     = "go1.x"
+  description = "(Optional) The runtime used by the Lambda function. When setting this be sure to check that the handler variables matches. Defaults to 'go1.x'."
+}
+
+variable "lambda_handler" {
+  type        = "string"
+  default     = "main"
+  description = "(Optional) The handler that will be called by Lambda. Make sure this mathes the runtime set. Defaults to 'main'."
+}
+
 variable "env_vars" {
   type        = "map"
   default     = {}
