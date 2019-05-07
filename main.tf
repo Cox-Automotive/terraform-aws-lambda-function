@@ -98,8 +98,8 @@ resource "aws_lambda_function" "vpc_func" {
   filename      = "${random_id.zip.keepers.local_src}/${random_id.zip.dec}-lambda.zip"
   function_name = "${random_id.zip.keepers.lambda_function_name}"
   role          = "${var.iam_role_arn}"
-  handler       = "main"
-  runtime       = "go1.x"
+  handler       = "${var.lambda_handler}"
+  runtime       = "${var.lambda_runtime}"
   timeout       = "${var.lambda_timeout}"
   memory_size   = "${var.lambda_memory_size}"
 
